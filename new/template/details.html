@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      // Add click event listener to the "Add to Cart" button
+      document.querySelector('.add-to-cart').addEventListener('click', function () {
+          // Get product data
+          var productData = {
+              id: '{{ data.id }}',
+              title: '{{ data.title }}',
+              price: '{{ data.price }}',
+              // Add other relevant data as needed
+          };
+  
+          // Get existing cart items from local storage or initialize an empty array
+          var cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  
+          // Check if the product is already in the cart
+          var existingItem = cartItems.find(item => item.id === productData.id);
+  
+          if (existingItem) {
+              // If the product is already in the cart, you might want to update quantity or do something else
+              alert('Product is already in the cart!');
+          } else {
+              // Add the product to the cart
+              cartItems.push(productData);
+  
+              // Update the local storage with the new cart items
+              localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  
+              // Provide feedback to the user (you can customize this part)
+              alert('Product added to cart!');
+          }
+      });
+  });
+  </script>
+      <div class="container">
+        <div class="row">
+            <div class="col-lg-5">
+             <img class="i" src="{{data.thumbnail}}" alt="">
+             <a href="{% url 'api:cart' data.id %}"><button class="add-to-cart"><span class="material-symbols-outlined">
+              shopping_cart
+              </span>Add to cart</button></a>
+             <a href=""><button class="buy-now"><span class="material-symbols-outlined">
+              flash_on
+              </span>Buy now</button></a>
+            </div>
+            <div class="col-lg-7">
+              <h1>{{data.title}}</h1>
+              <p>{{data.description}}</p>
+              <h2 class="a"><span class="material-symbols-outlined">
+                currency_rupee
+                </span>{{data.price}}</h2>  <p class="a1">{{data.discountPercentage}}%off</p>
+              <p><span class="material-symbols-outlined star">
+                grade
+                </span> {{data.rating}}</p>
+              <p>category:{{data.category}}</p>   
+             
+            </div>
+        </div>
+      </div>
+
+  {% endblock %}
+ 
